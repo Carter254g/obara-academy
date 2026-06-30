@@ -1,27 +1,30 @@
+import { lesson01 } from './lesson-01'
+import type { LessonData } from '../types/course'
+
+// Current active lesson
+export const currentLesson: LessonData = lesson01 as LessonData
+
+// Lesson sections for navigation (kept for backwards compatibility with old components)
 export interface LessonSectionData {
   id: string
   title: string
   description: string
 }
 
-export const lessonMetadata = {
-  moduleTitle: 'Module 1: Data Visualization Essentials',
-  lessonTitle: 'Building Interactive Learning Dashboards',
-  duration: '27 min',
-  difficulty: 'Intermediate',
-  xp: 25,
-}
-
 export const lessonSections: LessonSectionData[] = [
   { id: 'overview', title: 'Overview', description: 'A quick introduction to the lesson and its value.' },
-  { id: 'objectives', title: 'Learning Objectives', description: 'What learners will be able to do by the end.' },
-  { id: 'content', title: 'Lesson Content', description: 'Theory, best practices, and guided walkthroughs.' },
-  { id: 'demonstration', title: 'Demonstration', description: 'A real-world example of the tool in action.' },
-  { id: 'guided-practice', title: 'Guided Practice', description: 'Hands-on exercises with instructor support.' },
-  { id: 'independent-practice', title: 'Independent Practice', description: 'Self-paced tasks to reinforce learning.' },
-  { id: 'resources', title: 'Resources', description: 'Downloadable materials and reference links.' },
-  { id: 'quiz', title: 'Quiz', description: 'Knowledge checks to validate your understanding.' },
-  { id: 'assignment', title: 'Assignment', description: 'A capstone task to apply the lesson skills.' },
-  { id: 'summary', title: 'Lesson Summary', description: 'A concise recap of the key takeaways.' },
-  { id: 'next-lesson', title: 'Next Lesson', description: 'The recommended next module after completing this lesson.' },
+  { id: 'interface', title: 'The Interface', description: 'Understanding the workspace.' },
+  { id: 'importingPhotos', title: 'Importing & Organizing', description: 'Setting up your photo library.' },
+  { id: 'basicAdjustments', title: 'Core Adjustments', description: 'Learn essential editing tools.' },
+  { id: 'nonDestructiveEditing', title: 'Non-Destructive Editing', description: 'Protect your originals while editing.' },
+  { id: 'exporting', title: 'Exporting Photos', description: 'Prepare photos for sharing.' },
 ]
+
+// Legacy metadata for backwards compatibility
+export const lessonMetadata = {
+  moduleTitle: currentLesson.moduleTitle,
+  lessonTitle: currentLesson.title,
+  duration: currentLesson.duration,
+  difficulty: currentLesson.difficulty,
+  xp: currentLesson.xpReward,
+}

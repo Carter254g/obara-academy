@@ -1,23 +1,17 @@
 import { ChevronDown } from 'lucide-react'
-import type { CourseModule, Lesson } from '../../types/course'
-import { CourseSidebarItem } from './course-sidebar-item'
+import type { Lesson, Module } from '../../types/course'
+import { LessonItem } from './lesson-item'
 
-interface CourseSidebarGroupProps {
-  module: CourseModule
+interface ModuleSectionProps {
+  module: Module
   activeLessonId: string
   isExpanded: boolean
   onToggle: (moduleId: string) => void
   onSelectLesson: (lesson: Lesson) => void
 }
 
-export function CourseSidebarGroup({
-  module,
-  activeLessonId,
-  isExpanded,
-  onToggle,
-  onSelectLesson,
-}: CourseSidebarGroupProps) {
-  const completedCount = module.lessons.filter((lesson: Lesson) => lesson.state === 'completed').length
+export function ModuleSection({ module, activeLessonId, isExpanded, onToggle, onSelectLesson }: ModuleSectionProps) {
+  const completedCount = module.lessons.filter((lesson) => lesson.completed).length
 
   return (
     <div className="rounded-[2rem] border border-slate-200 bg-white shadow-sm">
@@ -35,8 +29,8 @@ export function CourseSidebarGroup({
 
       {isExpanded && (
         <div className="space-y-2 px-2 pb-4">
-          {module.lessons.map((lesson: Lesson) => (
-            <CourseSidebarItem
+          {module.lessons.map((lesson) => (
+            <LessonItem
               key={lesson.id}
               lesson={lesson}
               isActive={lesson.id === activeLessonId}

@@ -3,9 +3,9 @@
 import { useMemo, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '../ui/button'
-import { Progress } from '../ui/progress'
 import type { Course, Lesson } from '../../types/course'
-import { CourseSidebarGroup } from './course-sidebar-group'
+import { ModuleSection } from './module-section'
+import { ProgressCard } from './progress-card'
 import { useAutoScrollToActiveLesson } from '../../hooks/use-auto-scroll'
 
 interface CourseSidebarProps {
@@ -20,7 +20,7 @@ export function CourseSidebar({ course, activeLessonId, onLessonSelect }: Course
   const listRef = useAutoScrollToActiveLesson(activeLessonId)
 
   const completedLessons = useMemo(
-    () => course.modules.flatMap((module) => module.lessons).filter((lesson) => lesson.state === 'completed').length,
+    () => course.modules.flatMap((module) => module.lessons).filter((lesson) => lesson.completed).length,
     [course.modules]
   )
 
@@ -37,6 +37,11 @@ export function CourseSidebar({ course, activeLessonId, onLessonSelect }: Course
     )
   }
 
+  const handleSelectLesson = (lesson: Lesson) => {
+    onLessonSelect(lesson)
+    setDrawerOpen(false)
+  }
+
   return (
     <div className="relative">
       <div className="lg:hidden">
@@ -46,34 +51,28 @@ export function CourseSidebar({ course, activeLessonId, onLessonSelect }: Course
         </Button>
       </div>
 
-      <aside className="hidden lg:block">
-        <div className="sticky top-8 space-y-6">
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-soft">
-            <p className="text-xs uppercase tracking-[0.28em] text-sky-600">Course progress</p>
-            <h2 className="mt-4 text-xl font-semibold text-slate-900">{course.title}</h2>
-            <div className="mt-6 space-y-3">
-              <Progress value={progressValue} className="h-3 rounded-full" />
-              <div className="flex items-center justify-between text-sm text-slate-500">
-                <span>{completedLessons} of {totalLessons} lessons completed</span>
-                <span>{progressValue}%</span>
-              </div>
-            </div>
-          </div>
+      <aside className="hidden lg:block lg:w-[320px] xl:w-[360px]">
+        <div className="sticky top-4 h-[calc(100vh-2rem)] overflow-y-auto pr-2">
+          <div className="space-y-6">
+            <ProgressCard
+              course={course}
+              completedLessons={completedLessons}
+              totalLessons={totalLessons}
+              progressValue={progressValue}
+            />
 
-          <div className="space-y-4" ref={listRef}>
-            {course.modules.map((module) => (
-              <CourseSidebarGroup
-                key={module.id}
-                module={module}
-                activeLessonId={activeLessonId}
-                isExpanded={expandedModules.includes(module.id)}
-                onToggle={handleToggleModule}
-                onSelectLesson={(lesson) => {
-                  onLessonSelect(lesson)
-                  setDrawerOpen(false)
-                }}
-              />
-            ))}
+            <div className="space-y-4" ref={listRef}>
+              {course.modules.map((module) => (
+                <ModuleSection
+                  key={module.id}
+                  module={module}
+                  activeLessonId={activeLessonId}
+                  isExpanded={expandedModules.includes(module.id)}
+                  onToggle={handleToggleModule}
+                  onSelectLesson={handleSelectLesson}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </aside>
@@ -96,25 +95,23 @@ export function CourseSidebar({ course, activeLessonId, onLessonSelect }: Course
             </div>
 
             <div className="mb-5">
-              <Progress value={progressValue} className="h-3 rounded-full" />
-              <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
-                <span>{completedLessons} of {totalLessons} lessons completed</span>
-                <span>{progressValue}%</span>
-              </div>
+              <ProgressCard
+                course={course}
+                completedLessons={completedLessons}
+                totalLessons={totalLessons}
+                progressValue={progressValue}
+              />
             </div>
 
             <div className="space-y-4">
               {course.modules.map((module) => (
-                <CourseSidebarGroup
+                <ModuleSection
                   key={module.id}
                   module={module}
                   activeLessonId={activeLessonId}
                   isExpanded={expandedModules.includes(module.id)}
                   onToggle={handleToggleModule}
-                  onSelectLesson={(lesson) => {
-                    onLessonSelect(lesson)
-                    setDrawerOpen(false)
-                  }}
+                  onSelectLesson={handleSelectLesson}
                 />
               ))}
             </div>
