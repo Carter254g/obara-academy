@@ -1,5 +1,5 @@
-import LessonPage from '../components/lesson/lesson-page'
+import CourseNavigationPage from './course-navigation/page'
 
 export default function Page() {
-  return <LessonPage />
+    return <CourseNavigationPage />
 }

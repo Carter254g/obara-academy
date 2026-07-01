@@ -20,11 +20,10 @@ import {
 import type { Course, Lesson } from '../../types/course'
 
 export default function CourseNavigationPage() {
-  const [savedProgress] = useState(() => loadSavedCourseState())
-  const [course, setCourse] = useState<Course>(() => cloneCourse(savedProgress?.course ?? courseData))
-  const [activeLessonId, setActiveLessonId] = useState<string>(() => savedProgress?.activeLessonId ?? getInitialActiveLessonId(courseData))
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
-
+    const [course, setCourse] = useState<Course>(() => cloneCourse(courseData))
+    const [activeLessonId, setActiveLessonId] = useState<string>(() => getInitialActiveLessonId(courseData))
+    const [toastMessage, setToastMessage] = useState<string | null>(null)
+    const [hasHydrated, setHasHydrated] = useState(false)
   const activeLesson = useMemo(
     () => findLessonById(course, activeLessonId) ?? course.modules[0].lessons[0],
     [course, activeLessonId]
@@ -42,9 +41,19 @@ export default function CourseNavigationPage() {
   const previousLesson = useMemo(() => getAdjacentLesson(course, activeLessonId, 'previous'), [course, activeLessonId])
   const nextLesson = useMemo(() => getAdjacentLesson(course, activeLessonId, 'next'), [course, activeLessonId])
 
-  useEffect(() => {
-    saveCourseState(course, activeLessonId)
-  }, [course, activeLessonId])
+    useEffect(() => {
+        const savedProgress = loadSavedCourseState()
+        if (savedProgress) {
+            setCourse(savedProgress.course)
+            setActiveLessonId(savedProgress.activeLessonId)
+        }
+        setHasHydrated(true)
+    }, [])
+
+    useEffect(() => {
+        if (!hasHydrated) return
+        saveCourseState(course, activeLessonId)
+    }, [course, activeLessonId, hasHydrated])
 
   const showSuccessToast = (message: string) => {
     setToastMessage(message)

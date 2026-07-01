@@ -10,9 +10,9 @@ import type { LessonData } from '../types/course'
 
 export const lesson01: LessonData = {
   // Basic Lesson Metadata
-  id: 'lesson-01',
+  id: 'lesson-1',
   title: 'Introduction to Adobe Lightroom Classic',
-  moduleTitle: 'Module 1: Photography Fundamentals',
+    moduleTitle: 'Adobe Lightroom',
   description: 'Master the fundamentals of Adobe Lightroom Classic and learn how to organize, edit, and enhance your photography workflow.',
   duration: '42 min',
   difficulty: 'Beginner' as const,
