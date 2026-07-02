@@ -3,6 +3,8 @@ import { lesson01 } from './lesson-01'
 import { lesson02 } from './lesson-02'
 import { lesson03 } from './lesson-03'
 import { lesson04 } from './lesson-04'
+import { lesson05 } from './lesson-05'
+
 
 // Current active lesson
 export const currentLesson: LessonData = lesson01 as LessonData
@@ -39,4 +41,5 @@ export const lessonRegistry: Record<string, LessonData> = {
     [lesson02.id]: lesson02,
     [lesson03.id]: lesson03,
     [lesson04.id]: lesson04,
+    [lesson05.id]: lesson05,
 }
