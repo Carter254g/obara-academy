@@ -1,5 +1,8 @@
 import type { LessonData } from '../types/course'
 import { lesson01 } from './lesson-01'
+import { lesson02 } from './lesson-02'
+import { lesson03 } from './lesson-03'
+import { lesson04 } from './lesson-04'
 
 // Current active lesson
 export const currentLesson: LessonData = lesson01 as LessonData
@@ -30,7 +33,10 @@ export const lessonMetadata = {
 }
 
 // Registry of authored lesson content, keyed by lesson id.
-// Add additional entries here as new lessons are authored (e.g. lesson-2, lesson-3, ...).
+// Add additional entries here as new lessons are authored (e.g. lesson-5, lesson-6, ...).
 export const lessonRegistry: Record<string, LessonData> = {
     [lesson01.id]: lesson01,
+    [lesson02.id]: lesson02,
+    [lesson03.id]: lesson03,
+    [lesson04.id]: lesson04,
 }

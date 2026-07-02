@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Lesson } from '../../types/course'
-import { lesson01 } from '../../lib/lesson-01'
+import { lessonRegistry } from '../../lib/lesson-data'
 import { Checklist } from '../ui/checklist'
 import { Callout } from '../ui/callout'
 import { ImagePlaceholder } from '../ui/image-placeholder'
@@ -12,8 +12,8 @@ interface LessonContentProps {
 }
 
 export function LessonContent({ lesson }: LessonContentProps) {
-    const fullLesson = lesson.id === lesson01.id ? { ...lesson01, ...lesson } : null
-
+    const authoredLesson = lessonRegistry[lesson.id]
+    const fullLesson = authoredLesson ? { ...authoredLesson, ...lesson } : null
     if (!fullLesson) {
         return (
             <div className="space-y-6 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-soft">

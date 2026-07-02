@@ -1,12 +1,13 @@
 import type { Lesson } from '../../types/course'
-import { lesson01 } from '../../lib/lesson-01'
+import { lessonRegistry } from '../../lib/lesson-data'
 
 interface LessonSummaryProps {
     lesson: Lesson
 }
 
 export function LessonSummary({ lesson }: LessonSummaryProps) {
-    const fullLesson = lesson.id === lesson01.id ? { ...lesson01, ...lesson } : null
+    const authoredLesson = lessonRegistry[lesson.id]
+    const fullLesson = authoredLesson ? { ...authoredLesson, ...lesson } : null
     if (fullLesson) {
         return (
             <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-soft">
