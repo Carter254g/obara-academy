@@ -10,7 +10,10 @@ import { lesson08 } from './lesson-08'
 import { lesson09 } from './lesson-09'
 import { lesson10 } from './lesson-10'
 import { lesson11 } from './lesson-11'
-
+import { lesson12 } from './lesson-12'
+import { lesson13 } from './lesson-13'
+import { lesson14 } from './lesson-14'
+import { lesson15 } from './lesson-15'
 // Current active lesson
 export const currentLesson: LessonData = lesson01 as LessonData
 
@@ -53,7 +56,12 @@ export const lessonRegistry: Record<string, LessonData> = {
     [lesson09.id]: lesson09,
     [lesson10.id]: lesson10,
     [lesson11.id]: lesson11,
-    
+    [lesson12.id]: lesson12,
+    [lesson13.id]: lesson13,
+    [lesson14.id]: lesson14,
+    [lesson15.id]: lesson15,
+
+
 
 
 

@@ -18,12 +18,31 @@ import {
   toggleLessonComplete,
 } from '../../lib/course-utils'
 import type { Course, Lesson } from '../../types/course'
+import { ModuleAssessment } from '../../components/assessment/module-assessment'
+
+const MODULE_1_ASSESSMENT_KEY = 'obara-module-1-assessment'
+
+function isModule1AssessmentPassed(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    const raw = window.localStorage.getItem(MODULE_1_ASSESSMENT_KEY)
+    if (!raw) return false
+    return JSON.parse(raw).passed === true
+  } catch {
+    return false
+  }
+}
 
 export default function CourseNavigationPage() {
     const [course, setCourse] = useState<Course>(() => cloneCourse(courseData))
     const [activeLessonId, setActiveLessonId] = useState<string>(() => getInitialActiveLessonId(courseData))
     const [toastMessage, setToastMessage] = useState<string | null>(null)
     const [hasHydrated, setHasHydrated] = useState(false)
+  const [assessmentPassed, setAssessmentPassed] = useState(false)
+
+  useEffect(() => {
+    setAssessmentPassed(isModule1AssessmentPassed())
+  }, [])
   const activeLesson = useMemo(
     () => findLessonById(course, activeLessonId) ?? course.modules[0].lessons[0],
     [course, activeLessonId]
@@ -88,18 +107,22 @@ export default function CourseNavigationPage() {
       <div className="mx-auto grid max-w-7xl gap-8 xl:grid-cols-[380px_1fr]">
         <CourseSidebar course={course} activeLessonId={activeLessonId} onLessonSelect={handleLessonSelect} />
 
-        <LessonPlayer
-          course={course}
-          activeLesson={activeLesson}
-          currentModuleTitle={activeModule?.title ?? 'Course'}
-          completedLessons={completedLessons}
-          totalLessons={totalLessons}
-          previousLesson={previousLesson}
-          nextLesson={nextLesson}
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-          onToggleComplete={handleToggleComplete}
-        />
+        {activeLesson.id === 'lesson-8' && !assessmentPassed ? (
+          <ModuleAssessment onPassed={() => setAssessmentPassed(true)} />
+        ) : (
+          <LessonPlayer
+            course={course}
+            activeLesson={activeLesson}
+            currentModuleTitle={activeModule?.title ?? 'Course'}
+            completedLessons={completedLessons}
+            totalLessons={totalLessons}
+            previousLesson={previousLesson}
+            nextLesson={nextLesson}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+            onToggleComplete={handleToggleComplete}
+          />
+        )}
       </div>
     </main>
   )
